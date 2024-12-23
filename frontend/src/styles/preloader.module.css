@@ -15,14 +15,14 @@ body {
   top: 50%;
 }
 
-svg {
+/* svg {
   width: 110px;
   height: 110px;
 }
 
 path {
   stroke-width: 0.25;
-}
+} */
 
 #cloud {
   position: relative;
@@ -39,7 +39,7 @@ path {
   left: 45px;
   top: 15px;
   z-index: 1;
-  
+
   animation: rotate 16s infinite linear;
 }
 
@@ -71,7 +71,7 @@ path {
   height: 10px;
   margin-left: 4px;
   border-radius: 0 0 6px 6px;
-  
+
   animation: drop 350ms infinite;
 }
 

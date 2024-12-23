@@ -7,6 +7,16 @@
     font-family: 'Montserrat', sans-serif;
 }
 
+body {
+    height: 100vh;
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .pywebview-drag-region {
   height: 30px;
   display: flex;
@@ -15,4 +25,10 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   background-color: rgba(178, 161, 223, 0.5);
   backdrop-filter: blur(2px);
+}
+
+.app-content {
+  height: 100%;
+  background: url('./assets/vector/ApplicationBackground.svg') no-repeat center;
+  background-size: cover;
 }

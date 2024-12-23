@@ -37,7 +37,7 @@ class Avatars(BaseClient):
         return [{
             "id": avatar.avtr,
             "name": avatar.title,
-            "thumbnailImageUrl": avatar.thumbnailUrl 
+            "thumbnailImageUrl": avatar.thumbnailUrl
         } for avatar in avatars]
 
 
@@ -82,7 +82,7 @@ class Avatars(BaseClient):
         avatars = []
 
         tasks = []
-        
+
         for avatar in raw_avatars[start_index:end_index]:
             avtr = avatar.split("|")[0]
             tasks.append(self.get_avatar_info(avtr))
@@ -93,7 +93,7 @@ class Avatars(BaseClient):
             "totalPages": total_pages,
             "avatars": avatars
         }
-        
+
         return result
 
 
@@ -131,5 +131,3 @@ class Avatars(BaseClient):
             return True
 
         return False
-
-

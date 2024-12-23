@@ -29,8 +29,8 @@ if __name__ == "__main__":
 
     webview.create_window(
         'eva',
-        'http://localhost:5173', 
-        # 'frontend/dist/index.html', 
+        'http://localhost:5173',
+        # 'frontend/dist/index.html',
         js_api=api,
         width=1280,
         height=800,
@@ -43,7 +43,7 @@ if __name__ == "__main__":
       'ALLOW_DOWNLOADS': True,
       'ALLOW_FILE_URLS': True,
       'OPEN_EXTERNAL_LINKS_IN_BROWSER': True,
-      'OPEN_DEVTOOLS_IN_DEBUG': False
+      'OPEN_DEVTOOLS_IN_DEBUG': True
     }
 
     webview.start(debug=True)

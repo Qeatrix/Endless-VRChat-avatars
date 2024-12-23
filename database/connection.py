@@ -11,7 +11,7 @@ from utils import syncify
 operating_system = system()
 directory = ""
 
-if operating_system == "Linux":
+if operating_system == "Linux" or operating_system == "Darwin":
     directory = os.path.expanduser("~/.local/share/eva/")
 
 elif operating_system == "Windows":
@@ -50,4 +50,3 @@ async def get_session():
 async def create_models():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-

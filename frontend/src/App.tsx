@@ -5,10 +5,11 @@ import { invoke } from "./api";
 import { Main } from "./components/Main";
 import { Login } from "./components/Login";
 
+import './app.css';
 
 
 export const App = () => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [authenticated, setAuthenticated] = useState(false)
 
   const checkAuth = async () => {
@@ -27,8 +28,9 @@ export const App = () => {
   return (
     <>
       <WindowFrame />
-      {loading ? <Preloader /> : authenticated ? <Main /> : <Login />}
+        <div className="app-content">
+        {loading ? <Preloader /> : authenticated ? <Main /> : <Login />}
+      </div>
     </>
   );
 };
-

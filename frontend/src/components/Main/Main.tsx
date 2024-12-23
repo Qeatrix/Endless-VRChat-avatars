@@ -1,9 +1,11 @@
-import { Sidebar } from "../components/Sidebar";
-import styles from "../styles/main.module.css"
+import { Sidebar } from "@/components/Sidebar";
 import { useState, useEffect } from "react";
-import { Saved } from "../components/Saved";
-import { Search } from "../components/Search";
-import { Official } from "../components/Official";
+import { Saved } from "@/components/Saved";
+import { Search } from "@/components/Search";
+import { Official } from "@/components/Official";
+
+import styles from "@/styles/main.module.css"
+import css from "./Main.module.less";
 
 
 enum Catalog {
@@ -22,7 +24,7 @@ export const Main = () => {
 
   return (
     <>
-      <div className={styles.background}>
+      <div className={css.Wrapper}>
         <Sidebar />
         {catalog === Catalog.SAVED ? (
           <Saved />
@@ -32,8 +34,7 @@ export const Main = () => {
           <Search />
         )}
       </div>
-      
+
     </>
   )
 }
-
