@@ -6,13 +6,8 @@ import { Official } from "@/components/Official";
 
 import styles from "@/styles/main.module.css"
 import css from "./Main.module.less";
+import { Catalog } from "@/types";
 
-
-enum Catalog {
-  OFFICIAL,
-  SEARCH,
-  SAVED
-}
 
 export const Main = () => {
   const [catalog, setCatalog] = useState<Catalog>(Catalog.SAVED)
@@ -25,7 +20,10 @@ export const Main = () => {
   return (
     <>
       <div className={css.Wrapper}>
-        <Sidebar />
+        <Sidebar
+          catalog={catalog}
+          setCatalog={setCatalog}
+        />
         {catalog === Catalog.SAVED ? (
           <Saved />
         ) : catalog === Catalog.OFFICIAL ? (

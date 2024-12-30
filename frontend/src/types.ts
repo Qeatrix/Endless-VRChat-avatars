@@ -14,3 +14,9 @@ export type AvatarSearch = {
   totalPages: number
   avatars: Avatar[]
 }
+
+export enum Catalog {
+  OFFICIAL,
+  SEARCH,
+  SAVED
+}

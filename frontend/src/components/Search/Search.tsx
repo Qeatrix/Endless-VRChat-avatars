@@ -5,15 +5,20 @@ import { Avatar, AvatarSearch } from "@/types";
 import { FavouriteIcon } from "../../assets/FavouriteIcon";
 import styles from "@/styles/search.module.css"
 import css from "./Search.module.less";
+import { AvatarButtons } from "@/components/avatarButtons";
+import { SearchIcon } from "@/assets/SearchIcon";
+import { Pagination } from "./pagination";
 
 
 export const Search = () => {
   const [avatars, setAvatars] = useState<Avatar[]>([])
   const [totalPages, setTotalPages] = useState(0)
+  const [searchValue, setSearchValue] = useState("manuka")
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const searchAvatars = async (query: string) => {
+  const searchAvatars = async (query: string, page: number) => {
     // query, page
-    const request: AvatarSearch = await invoke("avatars.search_avatars", query, 1)
+    const request: AvatarSearch = await invoke("avatars.search_avatars", query, page)
 
     console.log(request.avatars);
 
@@ -21,38 +26,53 @@ export const Search = () => {
     setTotalPages(request.totalPages)
   }
 
-
   useEffect(() => {
-    searchAvatars("manuka")
+    searchAvatars(searchValue, currentPage)
   }, [])
 
-
-  const changeAvatar = async (id: string) => {
-    await invoke("avatars.change_avatar", id)
-  }
-
-
-  const addToSavedAvatars = async (avtr: string, title: string, thumbnail: string) => {
-    await invoke("avatars.add_avatar_to_saved", {avtr, title, thumbnail})
-  }
 
   return (
     <>
       <div className={css.Wrapper}>
-        {avatars?.map(avatar => (
-          <div className={css.Avatar}>
-            <img
-              src={avatar.thumbnailImageUrl}
-              alt="Avatar Thumbnail" className={css.Avatar}
-            />
-            <div className={css.DetailsContainer}>
-              <div className={css.UpperBar}>
-                <FavouriteIcon />
+        <div className={css.Search}>
+          <input
+            type="text"
+            placeholder="Search"
+            className="input"
+            onChange={(e) => setSearchValue(e.target.value)}
+          />
+          <button
+            onClick={() => searchAvatars(searchValue, currentPage)}
+            className="btn"
+          >
+            <SearchIcon />
+          </button>
+        </div>
+        <div className={css.Container}>
+          {avatars?.map(avatar => (
+            <div className={css.Avatar} key={avatar.id}>
+              <img
+                src={avatar.thumbnailImageUrl}
+                alt="Avatar Thumbnail" className={css.Avatar}
+              />
+              <div className={css.DetailsContainer}>
+                <div className={css.UpperBar}>
+                  <div className={css.ActionContainer}>
+                    <AvatarButtons avatar={avatar} css={css} />
+                  </div>
+                </div>
+                <p>{avatar.name}</p>
               </div>
-              <p>{avatar.name}</p>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+        <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          searchAvatars={searchAvatars}
+          searchValue={searchValue}
+          totalPages={totalPages}
+        />
       </div>
     </>
   )

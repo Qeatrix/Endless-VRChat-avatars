@@ -1,11 +1,16 @@
-import styles from "../styles/official.module.css"
-import { invoke } from "../api";
+import styles from "@/styles/official.module.css"
+import { invoke } from "@/api";
 import { useEffect, useState } from "react";
-import { Avatar } from "../types";
+import { Avatar } from "@/types";
+import { AvatarButtons } from "@/components/avatarButtons";
+
+import css from "./Official.module.less";
+import { SearchIcon } from "../../assets/SearchIcon";
 
 
 export const Official = () => {
   const [avatars, setAvatars] = useState<Avatar[]>([])
+  const [searchValue, setSearchValue] = useState("");
 
 
   const getUploadedAvatars = async () => {
@@ -19,6 +24,8 @@ export const Official = () => {
     //avatars1 -> avatars6
     const avatars = await invoke("avatars.get_favorite_avatars", tag)
 
+    console.log(avatars);
+
     setAvatars(avatars)
   }
 
@@ -27,7 +34,7 @@ export const Official = () => {
     //getUploadedAvatars()
     getFavoriteAvatars("avatars1")
   }, [])
- 
+
 
   const changeAvatar = async (id: string) => {
     await invoke("avatars.change_avatar", id)
@@ -38,13 +45,14 @@ export const Official = () => {
     await invoke("avatars.add_avatar_to_saved", {avtr, title, thumbnail})
   }
 
+
   return (
     <div className={styles.background}>
       Official
 
       {avatars?.map(avatar => (
-        <div 
-          key={avatar.id} 
+        <div
+          key={avatar.id}
           className="avatar-block"
         >
           <p>{avatar.name}</p>

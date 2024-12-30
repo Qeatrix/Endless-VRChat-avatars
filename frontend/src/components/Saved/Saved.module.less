@@ -1,0 +1,126 @@
+.Wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+
+  background: rgba(156, 161, 198, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(2px);
+  border-radius: 40px;
+
+  width: 100%;
+  height: 100%;
+
+  overflow-y: scroll;
+
+  .Search {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    input {
+      width: 350px;
+      padding-right: 50px;
+    }
+
+    button {
+      height: 100%;
+      margin-left: -45px;
+      box-shadow: none;
+
+      svg {
+        path {
+          stroke: white;
+        }
+      }
+    }
+  }
+
+  .Container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+
+    .Avatar {
+      height: 216px;
+      width: 216px;
+      object-fit: cover;
+      position: relative;
+      border-radius: 20px;
+
+      img {
+        position: absolute;
+      }
+
+      .DetailsContainer {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+
+        background: linear-gradient(180deg, rgba(54, 54, 54, 0.3575) 0%, rgba(255, 255, 255, 0) 39%, rgba(54, 54, 54, 0.3575) 73%, rgba(33, 33, 33, 0.484) 89%, rgba(0, 0, 0, 0.55) 100%);
+        border-radius: 20px;
+
+        .UpperBar {
+          width: 100%;
+
+          .ActionContainer {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+
+            button {
+              height: 40px;
+              width: 40px;
+              background: transparent;
+              border: none;
+
+              svg {
+                height: 100%;
+                width: 100%;
+                transform: translate3d(0, 0, 0);
+
+                path {
+                  stroke-width: 1.5;
+                  stroke: white;
+                }
+              }
+            }
+
+            .applyActive {
+              svg {
+                fill: limegreen;
+
+                path {
+                  stroke: white;
+                }
+              }
+            }
+
+            .favActive {
+              svg {
+                fill: gold;
+
+                path {
+                  stroke: white;
+                }
+              }
+            }
+          }
+        }
+
+        p {
+          width: 100%;
+          margin-top: auto;
+          margin-bottom: 10px;
+          text-align: center;
+          color: white;
+        }
+      }
+    }
+  }
+}

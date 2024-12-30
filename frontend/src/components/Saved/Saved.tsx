@@ -1,11 +1,16 @@
 import styles from "@/styles/endless.module.css"
-import css from "./Saved.module.less";
 import { invoke } from "@/api";
 import { useEffect, useState } from "react";
 import { Avatar } from "@/types";
+import { AvatarButtons } from "../avatarButtons";
+
+import css from "./Saved.module.less";
+import { SearchIcon } from "../../assets/SearchIcon";
+
 
 export const Saved = () => {
   const [avatars, setAvatars] = useState<Avatar[]>([])
+  const [searchValue, setSearchValue] = useState("");
 
 
   const getSavedAvatars = async () => {
@@ -14,24 +19,52 @@ export const Saved = () => {
     setAvatars(avatars)
   }
 
+  const handleRemoveAvatar = (id: string) => {
+    setAvatars((prev) => prev.filter((avatar) => avatar.id !== id));
+  };
+
 
   useEffect(() => {
     getSavedAvatars()
   }, [])
 
 
-  const changeAvatar = async (id: string) => {
-    await invoke("avatars.change_avatar", id)
-  }
-
-
-  const removeAvatarFromSaved = async (id: string) => {
-    await invoke("avatars.remove_avatar_from_saved", id)
-  }
-
   return (
     <>
-     asd
+      <div className={css.Wrapper}>
+        <div className={css.Search}>
+          <input
+            type="text"
+            placeholder="Search"
+            className="input"
+            onChange={(e) => setSearchValue(e.target.value)}
+          />
+          <button
+            onClick={() => console.warn("Implement db search")}
+            className="btn"
+          >
+            <SearchIcon />
+          </button>
+        </div>
+        <div className={css.Container}>
+          {avatars?.map(avatar => (
+            <div className={css.Avatar}>
+              <img
+                src={avatar.thumbnailImageUrl}
+                alt="Avatar Thumbnail" className={css.Avatar}
+              />
+              <div className={css.DetailsContainer}>
+                <div className={css.UpperBar}>
+                  <div className={css.ActionContainer}>
+                    <AvatarButtons avatar={avatar} css={css} remove onRemove={handleRemoveAvatar} />
+                  </div>
+                </div>
+                <p>{avatar.name}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </>
   )
 
