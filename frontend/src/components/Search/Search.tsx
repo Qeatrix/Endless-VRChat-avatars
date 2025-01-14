@@ -8,6 +8,7 @@ import css from "./Search.module.less";
 import { AvatarButtons } from "@/components/avatarButtons";
 import { SearchIcon } from "@/assets/SearchIcon";
 import { Pagination } from "./pagination";
+import { Preloader } from "../Preloader";
 
 
 export const Search = () => {
@@ -15,11 +16,15 @@ export const Search = () => {
   const [totalPages, setTotalPages] = useState(0)
   const [searchValue, setSearchValue] = useState("manuka")
   const [currentPage, setCurrentPage] = useState(1);
+  const [isSearching, setIsSearching] = useState(false);
 
   const searchAvatars = async (query: string, page: number) => {
+    setIsSearching(true);
+
     // query, page
     const request: AvatarSearch = await invoke("avatars.search_avatars", query, page)
 
+    setIsSearching(false);
     console.log(request.avatars);
 
     setAvatars(request.avatars)
@@ -36,16 +41,19 @@ export const Search = () => {
       <div className={css.Wrapper}>
         <div className={css.Search}>
           <input
+            disabled={isSearching ? true : false}
             type="text"
             placeholder="Search"
             className="input"
             onChange={(e) => setSearchValue(e.target.value)}
+            value={searchValue}
           />
           <button
             onClick={() => searchAvatars(searchValue, currentPage)}
             className="btn"
           >
-            <SearchIcon />
+            {/* <SearchIcon /> */}
+            {isSearching ? <p>Searching</p>: <SearchIcon />}
           </button>
         </div>
         <div className={css.Container}>

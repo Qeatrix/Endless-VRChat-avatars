@@ -18,5 +18,8 @@ export type AvatarSearch = {
 export enum Catalog {
   OFFICIAL,
   SEARCH,
-  SAVED
+  SAVED,
+  SETTINGS,
+  UPLOAD,
+  DONATION
 }

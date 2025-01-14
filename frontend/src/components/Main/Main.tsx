@@ -7,6 +7,9 @@ import { Official } from "@/components/Official";
 import styles from "@/styles/main.module.css"
 import css from "./Main.module.less";
 import { Catalog } from "@/types";
+import { Settings } from "../settings";
+import { Upload } from "../upload";
+import { Donation } from "../donation";
 
 
 export const Main = () => {
@@ -28,8 +31,14 @@ export const Main = () => {
           <Saved />
         ) : catalog === Catalog.OFFICIAL ? (
           <Official />
-        ) : (
+        ) : catalog === Catalog.SEARCH ? (
           <Search />
+        ) : catalog === Catalog.SETTINGS ? (
+          <Settings />
+        ) : catalog === Catalog.UPLOAD ? (
+          <Upload />
+        ) : (
+          <Donation />
         )}
       </div>
 

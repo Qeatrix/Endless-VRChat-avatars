@@ -16,7 +16,9 @@ export const Official = () => {
   const getUploadedAvatars = async () => {
     const avatars = await invoke("avatars.get_uploaded_avatars")
 
-    setAvatars(avatars)
+    console.log(avatars);
+
+    // setAvatars(avatars as Avatar[]);
   }
 
 
@@ -25,13 +27,15 @@ export const Official = () => {
     const avatars = await invoke("avatars.get_favorite_avatars", tag)
 
     console.log(avatars);
+    if (!avatars.error) {
 
-    setAvatars(avatars)
+      setAvatars(avatars)
+    }
   }
 
 
   useEffect(() => {
-    //getUploadedAvatars()
+    // getUploadedAvatars()
     getFavoriteAvatars("avatars1")
   }, [])
 
@@ -46,28 +50,53 @@ export const Official = () => {
   }
 
 
+  // return (
+  //   <div className={styles.background}>
+  //     Official
+
+  //     {avatars?.map(avatar => (
+  //       <div
+  //         key={avatar.id}
+  //         className="avatar-block"
+  //       >
+  //         <p>{avatar.name}</p>
+  //         <img src={avatar.thumbnailImageUrl} />
+  //         <div className="avatar-buttons">
+  //           <button className="btn avatar-btn" onClick={() => changeAvatar(avatar.id)}>
+  //             Select
+  //           </button>
+  //           <button className="btn avatar-btn" onClick={() => addToSavedAvatars(avatar.id, avatar.name, avatar.thumbnailImageUrl)}>
+  //             To Custom
+  //           </button>
+  //         </div>
+  //       </div>
+  //     ))}
+
+  //   </div>
+  // )
+
   return (
-    <div className={styles.background}>
-      Official
-
-      {avatars?.map(avatar => (
-        <div
-          key={avatar.id}
-          className="avatar-block"
-        >
-          <p>{avatar.name}</p>
-          <img src={avatar.thumbnailImageUrl} />
-          <div className="avatar-buttons">
-            <button className="btn avatar-btn" onClick={() => changeAvatar(avatar.id)}>
-              Select
-            </button>
-            <button className="btn avatar-btn" onClick={() => addToSavedAvatars(avatar.id, avatar.name, avatar.thumbnailImageUrl)}>
-              To Custom
-            </button>
+    <>
+    <div className={css.Wrapper}>
+      <div className={css.Container}>
+        {avatars?.map(avatar => (
+          <div className={css.Avatar}>
+            <img
+              src={avatar.thumbnailImageUrl}
+              alt="Avatar Thumbnail" className={css.Avatar}
+            />
+            <div className={css.DetailsContainer}>
+              <div className={css.UpperBar}>
+                <div className={css.ActionContainer}>
+                  <AvatarButtons avatar={avatar} css={css} />
+                </div>
+              </div>
+              <p>{avatar.name}</p>
+            </div>
           </div>
-        </div>
-      ))}
-
+        ))}
+      </div>
     </div>
+  </>
   )
 }

@@ -15,12 +15,12 @@ class BaseClient:
 
         if not raw_auth_cookies:
             return None
-            
+
         auth_cookies = raw_auth_cookies.split(";")
 
         cookies = {
             "twoFactorAuth": auth_cookies[0],
             "auth": auth_cookies[1].strip()
         }
-        
+
         return cookies

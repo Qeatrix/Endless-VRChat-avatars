@@ -39,19 +39,24 @@
   }
 
   .Container {
-    display: flex;
+    /* display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    justify-content: center;
+    justify-content: center; */
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(216px, 1fr));
+    gap: 10px;
 
     .Avatar {
       height: 216px;
-      width: 216px;
+      /* width: 216px; */
       object-fit: cover;
       position: relative;
       border-radius: 20px;
 
       img {
+        width: 100%;
         position: absolute;
       }
 
