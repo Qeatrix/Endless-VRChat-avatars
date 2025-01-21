@@ -1,0 +1,85 @@
+.Avatar {
+  height: 216px;
+  /* width: 216px; */
+  object-fit: cover;
+  position: relative;
+  border-radius: 20px;
+
+  img {
+    width: 100%;
+    position: absolute;
+  }
+
+  .DetailsContainer {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+
+    background: linear-gradient(180deg, rgba(54, 54, 54, 0.3575) 0%, rgba(255, 255, 255, 0) 39%, rgba(54, 54, 54, 0.3575) 73%, rgba(33, 33, 33, 0.484) 89%, rgba(0, 0, 0, 0.55) 100%);
+    border-radius: 20px;
+
+    .UpperBar {
+      width: 100%;
+      opacity: 0;
+
+      .ActionContainer {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+
+        button {
+          height: 40px;
+          width: 40px;
+          background: transparent;
+          border: none;
+
+          svg {
+            height: 100%;
+            width: 100%;
+            transform: translate3d(0, 0, 0);
+
+            path {
+              stroke-width: 1.5;
+              stroke: white;
+            }
+          }
+        }
+
+        .applyActive {
+          svg {
+            fill: limegreen;
+
+            path {
+              stroke: white;
+            }
+          }
+        }
+
+        .favActive {
+          svg {
+            fill: gold;
+
+            path {
+              stroke: white;
+            }
+          }
+        }
+      }
+    }
+
+    p {
+      width: 100%;
+      margin-top: auto;
+      margin-bottom: 10px;
+      text-align: center;
+      color: white;
+    }
+  }
+
+  &:hover .UpperBar {
+    opacity: 1;
+    transition: opacity 0.2s;
+  }
+}

@@ -41,6 +41,25 @@ class Avatars(BaseClient):
         } for avatar in avatars]
 
 
+    def get_avatar_info_v2(self, avtr: str):
+      response = requests.get(
+        f"{self.base_api_url}/avatars/{avtr}",
+        headers={"User-Agent": self.user_agent},
+        cookies=self.cookies
+      )
+
+      print(response.json())
+
+      response_json = response.json()
+
+      result = {
+          "id": avtr,
+          "name": response_json.get("name"),
+          "thumbnailImageUrl": response_json.get("thumbnailImageUrl")
+      }
+
+      return result
+
     async def get_avatar_info(self, avtr: str):
         async with aiohttp.ClientSession(cookies=self.cookies) as session:
             async with session.get(

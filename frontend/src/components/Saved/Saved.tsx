@@ -1,16 +1,24 @@
 import styles from "@/styles/endless.module.css"
 import { invoke } from "@/api";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Avatar } from "@/types";
 import { AvatarButtons } from "../avatarButtons";
+import { UserContext } from "@/contexts";
 
 import css from "./Saved.module.less";
 import { SearchIcon } from "../../assets/SearchIcon";
+import { AvatarElement } from "../Avatar/Avatar";
+import { SpinnerIcon } from "../../assets/SpinnerIcon";
+import { FavouriteIcon } from "../../assets/FavouriteIcon";
 
 
 export const Saved = () => {
+  const { userData, updateCurrentAvatar } = useContext(UserContext);
+
   const [avatars, setAvatars] = useState<Avatar[]>([])
   const [searchValue, setSearchValue] = useState("");
+  const [searchAvatarId, setSearchAvatarId] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
 
 
   const getSavedAvatars = async () => {
@@ -23,45 +31,80 @@ export const Saved = () => {
     setAvatars((prev) => prev.filter((avatar) => avatar.id !== id));
   };
 
+  const addToSavedAvatars = async (id: string) => {
+    const result = await invoke("avatars.get_avatar_info_v2", id);
+    const { avtr, title, thumbnail } = result as Avatar;
+
+    if (title !== "" && thumbnail !== "") {
+      await invoke("avatars.add_avatar_to_saved", {avtr, title, thumbnail})
+    }
+  }
+
 
   useEffect(() => {
     getSavedAvatars()
   }, [])
 
+  useEffect(() => {
+    console.log(userData);
+  })
+
 
   return (
     <>
       <div className={css.Wrapper}>
-        <div className={css.Search}>
-          <input
-            type="text"
-            placeholder="Search"
-            className="input"
-            onChange={(e) => setSearchValue(e.target.value)}
-          />
-          <button
-            onClick={() => console.warn("Implement db search")}
-            className="btn"
-          >
-            <SearchIcon />
-          </button>
+        <div className={css.Bar}>
+          <div className={css.Search}>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              console.warn("Implement db search");
+            }}
+            >
+              <input
+                disabled={isSearching ? true : false}
+                type="text"
+                placeholder="Search"
+                className="input"
+                onChange={(e) => setSearchValue(e.target.value)}
+                value={searchValue}
+              />
+              <button
+                className="btn"
+                type="submit"
+              >
+                {/* <SearchIcon /> */}
+                {isSearching ? <SpinnerIcon class={css["spinner"]} /> : <SearchIcon />}
+              </button>
+            </form>
+          </div>
+          <div className={css.Search}>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              addToSavedAvatars(searchAvatarId);
+            }}
+            >
+              <input
+                disabled={isSearching ? true : false}
+                type="text"
+                placeholder="Avatar ID"
+                className="input"
+                onChange={(e) => setSearchAvatarId(e.target.value)}
+                value={searchAvatarId}
+              />
+              <button
+                className="btn"
+                type="submit"
+              >
+                {/* <SearchIcon /> */}
+                {isSearching ? <SpinnerIcon class={css["spinner"]} /> : <FavouriteIcon />}
+              </button>
+            </form>
+          </div>
+          <button className="btn" onClick={() => addToSavedAvatars(userData.currentAvatar)}>Add Current Avatar</button>
         </div>
         <div className={css.Container}>
           {avatars?.map(avatar => (
-            <div className={css.Avatar}>
-              <img
-                src={avatar.thumbnailImageUrl}
-                alt="Avatar Thumbnail" className={css.Avatar}
-              />
-              <div className={css.DetailsContainer}>
-                <div className={css.UpperBar}>
-                  <div className={css.ActionContainer}>
-                    <AvatarButtons avatar={avatar} css={css} remove onRemove={handleRemoveAvatar} />
-                  </div>
-                </div>
-                <p>{avatar.name}</p>
-              </div>
-            </div>
+            <AvatarElement avatar={avatar} />
           ))}
         </div>
       </div>

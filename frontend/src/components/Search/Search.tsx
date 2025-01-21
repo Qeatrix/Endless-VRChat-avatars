@@ -1,5 +1,5 @@
 import { invoke } from "@/api";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Avatar, AvatarSearch } from "@/types";
 
 import { FavouriteIcon } from "../../assets/FavouriteIcon";
@@ -9,6 +9,9 @@ import { AvatarButtons } from "@/components/avatarButtons";
 import { SearchIcon } from "@/assets/SearchIcon";
 import { Pagination } from "./pagination";
 import { Preloader } from "../Preloader";
+import { SpinnerIcon } from "../../assets/SpinnerIcon";
+import { AvatarElement } from "../Avatar/Avatar";
+import { Wrapper } from "../Wrapper/Wrapper";
 
 
 export const Search = () => {
@@ -18,11 +21,13 @@ export const Search = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isSearching, setIsSearching] = useState(false);
 
-  const searchAvatars = async (query: string, page: number) => {
+  const wrapper = useRef(null);
+
+  const searchAvatars = async () => {
     setIsSearching(true);
 
     // query, page
-    const request: AvatarSearch = await invoke("avatars.search_avatars", query, page)
+    const request: AvatarSearch = await invoke("avatars.search_avatars", searchValue, currentPage)
 
     setIsSearching(false);
     console.log(request.avatars);
@@ -32,56 +37,58 @@ export const Search = () => {
   }
 
   useEffect(() => {
-    searchAvatars(searchValue, currentPage)
+    searchAvatars()
   }, [])
 
 
+  useEffect(() => {
+    console.log(wrapper);
+    if (wrapper.current) {
+      (wrapper.current as HTMLDivElement).scrollTo(0, 0);
+    } else {
+      console.log("not found");
+    }
+  }, [currentPage])
+
   return (
     <>
-      <div className={css.Wrapper}>
-        <div className={css.Search}>
-          <input
-            disabled={isSearching ? true : false}
-            type="text"
-            placeholder="Search"
-            className="input"
-            onChange={(e) => setSearchValue(e.target.value)}
-            value={searchValue}
-          />
-          <button
-            onClick={() => searchAvatars(searchValue, currentPage)}
-            className="btn"
-          >
-            {/* <SearchIcon /> */}
-            {isSearching ? <p>Searching</p>: <SearchIcon />}
-          </button>
-        </div>
-        <div className={css.Container}>
-          {avatars?.map(avatar => (
-            <div className={css.Avatar} key={avatar.id}>
-              <img
-                src={avatar.thumbnailImageUrl}
-                alt="Avatar Thumbnail" className={css.Avatar}
+      <Wrapper containerRef={wrapper}>
+          <div className={css.Search}>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              searchAvatars();
+            }}
+            >
+              <input
+                disabled={isSearching ? true : false}
+                type="text"
+                placeholder="Search"
+                className="input"
+                onChange={(e) => setSearchValue(e.target.value)}
+                value={searchValue}
               />
-              <div className={css.DetailsContainer}>
-                <div className={css.UpperBar}>
-                  <div className={css.ActionContainer}>
-                    <AvatarButtons avatar={avatar} css={css} />
-                  </div>
-                </div>
-                <p>{avatar.name}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-        <Pagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          searchAvatars={searchAvatars}
-          searchValue={searchValue}
-          totalPages={totalPages}
-        />
-      </div>
+              <button
+                className="btn"
+                type="submit"
+              >
+                {/* <SearchIcon /> */}
+                {isSearching ? <SpinnerIcon class={css["spinner"]} /> : <SearchIcon />}
+              </button>
+            </form>
+          </div>
+          <div className={css.Container}>
+            {avatars?.map(avatar => (
+              <AvatarElement avatar={avatar} />
+            ))}
+          </div>
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            searchAvatars={searchAvatars}
+            searchValue={searchValue}
+            totalPages={totalPages}
+          />
+      </Wrapper>
     </>
   )
 

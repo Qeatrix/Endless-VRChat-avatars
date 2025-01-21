@@ -2,7 +2,6 @@ import { Sidebar } from "@/components/Sidebar";
 import { useState, useEffect } from "react";
 import { Saved } from "@/components/Saved";
 import { Search } from "@/components/Search";
-import { Official } from "@/components/Official";
 
 import styles from "@/styles/main.module.css"
 import css from "./Main.module.less";
@@ -10,6 +9,7 @@ import { Catalog } from "@/types";
 import { Settings } from "../settings";
 import { Upload } from "../upload";
 import { Donation } from "../donation";
+import { InGame } from "../InGame";
 
 
 export const Main = () => {
@@ -29,8 +29,8 @@ export const Main = () => {
         />
         {catalog === Catalog.SAVED ? (
           <Saved />
-        ) : catalog === Catalog.OFFICIAL ? (
-          <Official />
+        ) : catalog === Catalog.INGAME ? (
+          <InGame />
         ) : catalog === Catalog.SEARCH ? (
           <Search />
         ) : catalog === Catalog.SETTINGS ? (

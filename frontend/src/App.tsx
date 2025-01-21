@@ -40,7 +40,7 @@ export const App = () => {
   return (
     <>
       <WindowFrame />
-      <UserContext.Provider value={{ userData, updateCurrentAvatar }} >
+      <UserContext.Provider value={{ userData, updateCurrentAvatar }}>
         <div className="app-content">
           {loading ? <Preloader /> : authenticated ? <Main /> : <Login />}
           {/* <Login /> */}

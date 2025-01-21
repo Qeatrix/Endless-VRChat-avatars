@@ -31,8 +31,8 @@ export const Sidebar = ({ catalog, setCatalog }) => {
           Saved
         </button>
         <button
-          className={`${catalog === Catalog.OFFICIAL ? css.Selected : ""} btn`}
-          onClick={() => changeCatalog(Catalog.OFFICIAL)}
+          className={`${catalog === Catalog.INGAME ? css.Selected : ""} btn`}
+          onClick={() => changeCatalog(Catalog.INGAME)}
         >
           In-Game
         </button>

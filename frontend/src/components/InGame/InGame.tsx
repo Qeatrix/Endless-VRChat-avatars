@@ -1,34 +1,68 @@
-import styles from "@/styles/official.module.css"
 import { invoke } from "@/api";
 import { useEffect, useState } from "react";
 import { Avatar } from "@/types";
 import { AvatarButtons } from "@/components/avatarButtons";
 
-import css from "./Official.module.less";
+import css from "./InGame.module.less";
 import { SearchIcon } from "../../assets/SearchIcon";
+import { AvatarElement } from "../Avatar/Avatar";
+import { Wrapper } from "../Wrapper/Wrapper";
 
 
-export const Official = () => {
+const categories = [
+  {
+    "name": "avatars1",
+    "id": "1"
+  },
+  {
+    "name": "avatars2",
+    "id": "2"
+  },
+  {
+    "name": "avatars3",
+    "id": "3"
+  },
+  {
+    "name": "avatars4",
+    "id": "4"
+  },
+  {
+    "name": "avatars5",
+    "id": "5"
+  },
+  {
+    "name": "avatars6",
+    "id": "6"
+  },
+  {
+    "name": "uploaded",
+    "id": "7"
+  }
+]
+
+export const InGame = () => {
   const [avatars, setAvatars] = useState<Avatar[]>([])
   const [searchValue, setSearchValue] = useState("");
+  const [currentCategory, setCurrentCategory] = useState(categories[0]);
 
 
   const getUploadedAvatars = async () => {
     const avatars = await invoke("avatars.get_uploaded_avatars")
 
     console.log(avatars);
-
-    // setAvatars(avatars as Avatar[]);
+    if (!avatars.error) {
+      setAvatars(avatars)
+    }
   }
 
 
   const getFavoriteAvatars = async (tag: string) => {
     //avatars1 -> avatars6
+    console.log("run");
     const avatars = await invoke("avatars.get_favorite_avatars", tag)
 
     console.log(avatars);
     if (!avatars.error) {
-
       setAvatars(avatars)
     }
   }
@@ -36,8 +70,17 @@ export const Official = () => {
 
   useEffect(() => {
     // getUploadedAvatars()
-    getFavoriteAvatars("avatars1")
-  }, [])
+
+    if (currentCategory.name === "uploaded") {
+      getUploadedAvatars();
+    } else {
+      getFavoriteAvatars(currentCategory.name);
+    }
+  }, [currentCategory])
+
+  useEffect(() => {
+    console.log(currentCategory);
+  })
 
 
   const changeAvatar = async (id: string) => {
@@ -77,26 +120,23 @@ export const Official = () => {
 
   return (
     <>
-    <div className={css.Wrapper}>
-      <div className={css.Container}>
-        {avatars?.map(avatar => (
-          <div className={css.Avatar}>
-            <img
-              src={avatar.thumbnailImageUrl}
-              alt="Avatar Thumbnail" className={css.Avatar}
-            />
-            <div className={css.DetailsContainer}>
-              <div className={css.UpperBar}>
-                <div className={css.ActionContainer}>
-                  <AvatarButtons avatar={avatar} css={css} />
-                </div>
-              </div>
-              <p>{avatar.name}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+      <Wrapper>
+        <div className={css.CategoriesContainer}>
+          {categories.map(category => (
+            <button
+              className={`btn ${currentCategory.id === category.id ? `${css.Selected}` : ``}`}
+              onClick={() => setCurrentCategory(category)}
+            >
+              {category.name}
+            </button>
+          ))}
+        </div>
+        <div className={css.Container}>
+          {avatars?.map(avatar => (
+            <AvatarElement avatar={avatar} />
+          ))}
+        </div>
+    </Wrapper>
   </>
   )
 }
